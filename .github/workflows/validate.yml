@@ -1,0 +1,28 @@
+name: Validate Kubernetes Manifests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.30.14
+
+      - name: Validate kustomize build
+        run: |
+          kubectl kustomize k8s
+
+      - name: Show rendered manifests
+        run: |
+          kubectl kustomize k8s
